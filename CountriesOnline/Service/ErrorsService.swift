@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum NetworkErrorService: Error {
+enum NetworkErrorService: String, Error {
     case badURL
     case badRequest
     case badResponce

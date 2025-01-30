@@ -21,6 +21,6 @@ struct CountryDetailView: View {
 }
 
 #Preview {
-    let country = CountriesViewModel().countries.first!
+    let country = CountriesViewModel().countriesToShowArray.first!
     CountryDetailView(country: country)
 }

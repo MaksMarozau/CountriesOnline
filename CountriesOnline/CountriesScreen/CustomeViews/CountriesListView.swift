@@ -8,11 +8,28 @@
 import SwiftUI
 
 struct CountriesListView: View {
+    
+    @StateObject var viewModel: CountriesViewModel
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        List {
+            ForEach(viewModel.countriesToShowArray) { country in
+                Button {
+                    viewModel.selectedCountry = country
+                } label: {
+                    CountryCellItem(country: country)
+                }
+            }
+            .listRowSeparator(.hidden)
+        }
+        .scrollIndicators(.hidden)
+        .listStyle(.plain)
+        .background(Color.clear)
+        .scrollContentBackground(.hidden)
     }
 }
 
 #Preview {
-    CountriesListView()
+    let viewModel = CountriesViewModel()
+    CountriesListView(viewModel: viewModel)
 }
