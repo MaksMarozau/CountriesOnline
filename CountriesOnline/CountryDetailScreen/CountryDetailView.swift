@@ -16,11 +16,11 @@ struct CountryDetailView: View {
                 .font(.largeTitle)
                 .padding()
         }
-        .navigationTitle(country.name)
+        .navigationTitle(country.name.official)
     }
 }
 
 #Preview {
-    let country: CountryModel = CountryModel(name: "Belarus", flag: UIImage(systemName: "flag")!, region: "Europe")
+    let country = CountriesViewModel().countries.first!
     CountryDetailView(country: country)
 }

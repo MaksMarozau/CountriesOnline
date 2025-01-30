@@ -22,15 +22,19 @@ struct CountriesView: View {
                             viewModel.selectedCountry = country
                         } label: {
                             CountryCellItem(country: country)
-                                .listRowSeparator(.hidden)
                         }
                     }
+                    .listRowSeparator(.hidden)
+                }
+                .task {
+                    await viewModel.fetchCountries()
                 }
                 .scrollIndicators(.hidden)
                 .listStyle(.plain)
                 .background(Color.clear)
                 .scrollContentBackground(.hidden)
                 .padding(.top, 12)
+                
                 .navigationDestination(item: $viewModel.selectedCountry) { country in
                     CountryDetailView(country: country)
                 }

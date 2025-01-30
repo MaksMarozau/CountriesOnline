@@ -9,11 +9,16 @@ import SwiftUI
 
 final class CountriesViewModel: ObservableObject {
     
-    @Published var countries: [CountryModel] = [
-        CountryModel(name: "Belarus", flag: UIImage(systemName: "flag")!, region: "Europe"),
-        CountryModel(name: "Ukraine", flag: UIImage(systemName: "flag")!, region: "Europe"),
-        CountryModel(name: "USA", flag: UIImage(systemName: "flag")!, region: "America")
-    ]
-    
+    @Published var countries: [CountryModel] = []
     @Published var selectedCountry: CountryModel?
+    
+    func fetchCountries() async {
+        do {
+            let countriesData = try await NetworkService.shared.fetchData()
+            let countries = try ParcingService.shared.decodeData(data: countriesData)
+            self.countries = countries
+        } catch {
+            print("Error fetching countries: \(error as? NetworkErrorService)")
+        }
+    }
 }

@@ -1,0 +1,42 @@
+//
+//  NetworkService.swift
+//  CountriesOnline
+//
+//  Created by Maks on 30.01.25.
+//
+
+import Foundation
+
+final class NetworkService {
+    
+    static let shared = NetworkService()
+    
+    private init() {}
+    
+    private func createURL() -> URL? {
+        let tunnel = "https://"
+        let server = "restcountries.com"
+        let endpoint = "/v3.1/all"
+        let getParameters = ""
+        
+        let url = URL(string: tunnel + server + endpoint + getParameters)
+        
+        return url
+    }
+    
+    func fetchData() async throws -> Data {
+        guard let url = createURL() else {
+            throw NetworkErrorService.badURL
+        }
+        
+        do {
+            let (data, responce) = try await URLSession.shared.data(from: url)
+            guard let httpResponce = responce as? HTTPURLResponse, (200...299).contains(httpResponce.statusCode) else {
+                throw NetworkErrorService.badResponce
+            }
+            return data
+        } catch {
+            throw NetworkErrorService.badRequest
+        }
+    }
+}

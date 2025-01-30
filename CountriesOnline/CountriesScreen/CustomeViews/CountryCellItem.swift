@@ -25,29 +25,56 @@ struct CountryCellItem: View {
             
             HStack {
                 VStack(alignment: .leading) {
-                    Text(country.name)
+                    Text(country.name.common)
                         .font(.system(size: 32, weight: .bold))
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.5)
+                        .frame(maxWidth: .infinity, alignment: .leading)
                     
                     Text(country.region)
-                        .font(.system(size: 19, weight: .semibold))
+                        .font(.system(size: 17, weight: .semibold))
+                        .foregroundStyle(.secondary)
                 }
-                .padding(.leading, 22)
+                .padding(.horizontal, 22)
                 .padding(.bottom, 9)
                 
                 
                 Spacer()
                 
-                Image(uiImage: country.flag)
-                    .resizable()
-                    .frame(width: 50, height: 50)
-                    .padding(.trailing, 22)
-                    .padding(.bottom, 9)
+                AsyncImage(url: URL(string: country.flags.png)) { status in
+                    switch status {
+                    case .empty:
+                        ProgressView()
+                    case .success(let image):
+                        image
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .cornerRadius(10)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 10)
+                                    .stroke(Color.black, lineWidth: 1)
+                                    )
+                            .frame(width: 80, height: 50)
+                            .padding(.trailing, 22)
+                            .padding(.bottom, 9)
+                        
+                            
+                    case .failure:
+                        Image(systemName: "flag.fill")
+                            .resizable()
+                            .frame(width: 60, height: 50)
+                            .padding(.trailing, 22)
+                            .padding(.bottom, 9)
+                    @unknown default:
+                        EmptyView()
+                    }
+                }
             }
         }
     }
 }
 
 #Preview {
-    let country = CountryModel(name: "Belarus", flag: UIImage(systemName: "flag")!, region: "Europe")
+    let country = CountryModel(name: CountryName(common: "Belarus", official: "Republic of Belarus"), cca2: "BL", cca3: "BLR", region: "Europe", subregion: "East Europe", population: 9200000, flags: CountryFlags(png: "https://flagcdn.com/w320/aw.png", svg: "https://flagcdn.com/aw.svg"))
     CountryCellItem(country: country)
 }
