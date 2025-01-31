@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		2DEE9EEE2D4C1DDC00FF34CD /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 2DEE9EED2D4C1DDC00FF34CD /* Kingfisher */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		2DEE9EB92D4A44E700FF34CD /* CountriesOnline.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CountriesOnline.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -23,6 +27,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2DEE9EEE2D4C1DDC00FF34CD /* Kingfisher in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -65,6 +70,7 @@
 			);
 			name = CountriesOnline;
 			packageProductDependencies = (
+				2DEE9EED2D4C1DDC00FF34CD /* Kingfisher */,
 			);
 			productName = CountriesOnline;
 			productReference = 2DEE9EB92D4A44E700FF34CD /* CountriesOnline.app */;
@@ -94,6 +100,9 @@
 			);
 			mainGroup = 2DEE9EB02D4A44E700FF34CD;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				2DEE9EEC2D4C1DDC00FF34CD /* XCRemoteSwiftPackageReference "Kingfisher" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 2DEE9EBA2D4A44E700FF34CD /* Products */;
 			projectDirPath = "";
@@ -324,6 +333,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		2DEE9EEC2D4C1DDC00FF34CD /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/onevcat/Kingfisher";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 8.1.4;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		2DEE9EED2D4C1DDC00FF34CD /* Kingfisher */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 2DEE9EEC2D4C1DDC00FF34CD /* XCRemoteSwiftPackageReference "Kingfisher" */;
+			productName = Kingfisher;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 2DEE9EB12D4A44E700FF34CD /* Project object */;
 }

@@ -33,7 +33,9 @@ struct CountriesView: View {
                 get: { viewModel.errorMessage != nil },
                 set: { _ in viewModel.errorMessage = nil })
             ){
-                Button("Ok", role: .cancel) {}
+                Button("Ok", role: .cancel) {
+                    viewModel.isLoading = false
+                }
             } message: {
                 Text(viewModel.errorMessage ?? "Unknowned Error")
             }

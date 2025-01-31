@@ -67,7 +67,9 @@ final class CountriesViewModel: ObservableObject {
                 self.showCountries()
             }
         } catch {
-            errorsProcessing(error)
+            DispatchQueue.main.async {
+                self.errorsProcessing(error)
+            }
         }
     }
 }

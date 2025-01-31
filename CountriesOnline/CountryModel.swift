@@ -16,6 +16,12 @@ struct CountryModel: Identifiable, Codable, Hashable {
     let subregion: String?
     let population: Int
     let flags: CountryFlags
+    let capital: [String]?
+    let area: Double
+    let currencies: [String: Currency]?
+    let languages: [String: String]?
+    let timezones: [String]
+    let latlng: [Double]
 }
 
 struct CountryName: Codable, Hashable {
@@ -26,4 +32,9 @@ struct CountryName: Codable, Hashable {
 struct CountryFlags: Codable, Hashable {
     let png: String
     let svg: String
+}
+
+struct Currency: Codable, Hashable {
+    let name: String
+    let symbol: String
 }
