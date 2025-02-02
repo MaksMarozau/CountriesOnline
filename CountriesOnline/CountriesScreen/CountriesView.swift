@@ -39,8 +39,10 @@ struct CountriesView: View {
             } message: {
                 Text(viewModel.errorMessage ?? "Unknowned Error")
             }
-            .task {
-                await viewModel.fetchCountries()
+            .onAppear() {
+                Task {
+                    await viewModel.fetchCountries()
+                }
             }
         }
     }

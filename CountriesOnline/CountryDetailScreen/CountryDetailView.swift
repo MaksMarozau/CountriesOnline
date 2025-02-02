@@ -11,6 +11,7 @@ import Kingfisher
 struct CountryDetailView: View {
     @State var country: CountryModel
     @State private var svgFlagImage: UIImage?
+    @StateObject private var viewModel = CountryDetailViewModel()
     
     var body: some View {
         VStack {
@@ -20,7 +21,7 @@ struct CountryDetailView: View {
                 .padding(.top, -10)
                 .padding(.bottom, 10)
             
-            FooterButtonsView()
+            FooterButtonsView(country: country, viewModel: viewModel)
         }
         .padding(.vertical, 20)
         .navigationTitle("About \(country.name.common)")

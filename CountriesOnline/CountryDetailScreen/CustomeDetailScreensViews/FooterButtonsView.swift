@@ -10,6 +10,8 @@ import SwiftUI
 struct FooterButtonsView: View {
     
     @State private var isFavorite: Bool = false
+    @State var country: CountryModel
+    @StateObject var viewModel: CountryDetailViewModel
     
     var body: some View {
         HStack {
@@ -46,7 +48,7 @@ struct FooterButtonsView: View {
                     .shadow(color: .customeGray, radius: 12, y: 5)
                 
                 Button {
-                    
+                    viewModel.openMapWithCoordinates(latitude: country.latlng[0], longitude: country.latlng[1])
                 } label: {
                     ZStack {
                         Color(.white)
@@ -94,5 +96,17 @@ struct FooterButtonsView: View {
 }
 
 #Preview {
-    FooterButtonsView()
+    let country = CountryModel(
+            name: CountryName(common: "Belarus", official: "Republic of Belarus"),
+            cca2: "BL", cca3: "BLR", region: "Europe", subregion: "East Europe",
+            population: 9200000,
+            flags: CountryFlags(png: "https://flagcdn.com/w320/aw.png", svg: "https://flagcdn.com/aw.svg"),
+            capital: ["Minsk"], area: 912345,
+            currencies: ["BYN" : Currency(name: "ruble", symbol: "p.")],
+            languages: ["BLR" : "Belarusian"],
+            timezones: ["UTC + 2"],
+            latlng: [52.52, 13.4]
+        )
+    let viewModel = CountryDetailViewModel()
+    FooterButtonsView(country: country, viewModel: viewModel)
 }

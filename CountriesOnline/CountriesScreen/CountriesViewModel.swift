@@ -21,8 +21,25 @@ final class CountriesViewModel: ObservableObject {
     }
     
     private func fetchData() async throws -> Data {
-        let data = try await NetworkService.shared.fetchData()
-        return data
+        do {
+            if await NetworkService.shared.checkInternetConnection() == true {
+                let data = try await NetworkService.shared.fetchData()
+                try await CoreDataService.shared.cacheCounrtiesData(counrtiesData: data)
+                return data
+            } else {
+                do {
+                    let data = try await CoreDataService.shared.loadcachedCountriesData()
+                    DispatchQueue.main.async {
+                        self.errorMessage = InthernetConectionErrorService.noInternetConnectionWithCache.rawValue
+                    }
+                    return data
+                } catch {
+                    throw InthernetConectionErrorService.noInternetConnectionWithoutCache
+                }
+            }
+        } catch {
+            throw error
+        }
     }
     
     private func decodeData(data: Data) throws -> [CountryModel] {
@@ -43,6 +60,8 @@ final class CountriesViewModel: ObservableObject {
     private func errorsProcessing(_ error: Error) {
         if let currentError = error as? NetworkErrorService {
             errorMessage = currentError.rawValue + "\nYou can try to restart the application"
+        } else if let currentError = error as? CoreDataErrorService {
+            errorMessage = currentError.rawValue + "\nPlease, relaunch the application"
         }
     }
 

@@ -14,13 +14,22 @@ enum NetworkErrorService: String, Error {
     case invalidData
 }
 
-enum CoreDataErrorService: Error {
+enum InthernetConectionErrorService: String, Error {
+    case noInternetConnectionWithCache = "Data was loaded from cache"
+    case noInternetConnectionWithoutCache = "No internet connection. No data in cache"
+}
+
+enum CoreDataErrorService: String, Error {
+    case cacheDataError
+    case entityCreationError
+    case saveDataError
+    case castDataError
+    case loadDataError
+    case noDataError 
+    
     case initCoreDataError
-    case entityError
-    case saveError
-    case castError
-    case loadError
+
     case objectNotFoundError
-    case updateTaskStatusError
+    case updateError
     case fetchEntityCountError
 }

@@ -6,12 +6,36 @@
 //
 
 import Foundation
+import Network
 
 final class NetworkService {
     
     static let shared = NetworkService()
+    private var monitor: NWPathMonitor?
     
-    private init() {}
+    private init() {
+        
+    }
+    
+    private func startNetworkMonitoring() {
+        monitor = NWPathMonitor()
+        let queue = DispatchQueue(label: "NetworkMonitorQueue")
+        monitor?.start(queue: queue)
+    }
+    
+    private func stopNetworkMonitoring() {
+        monitor?.cancel()
+    }
+    
+    func checkInternetConnection() async -> Bool {
+        await withCheckedContinuation { continuation in
+            startNetworkMonitoring()
+            monitor?.pathUpdateHandler = { path in
+                continuation.resume(returning: path.status == .satisfied)
+                self.stopNetworkMonitoring()
+            }
+        }
+    }
     
     private func createURL() -> URL? {
         let tunnel = "https://"
