@@ -7,9 +7,10 @@
 
 import SwiftUI
 
-struct CountriesListView: View {
+struct CountriesListView<ViewModel: CountriesListProtocol>: View {
     
-    @StateObject var viewModel: CountriesViewModel
+    @StateObject var viewModel: ViewModel
+    var canDelete: Bool
     
     var body: some View {
         List {
@@ -20,6 +21,7 @@ struct CountriesListView: View {
                     CountryCellItem(country: country)
                 }
             }
+            .onDelete(perform: canDelete ? delete : nil)
             .listRowSeparator(.hidden)
         }
         .scrollIndicators(.hidden)
@@ -27,9 +29,22 @@ struct CountriesListView: View {
         .background(Color.clear)
         .scrollContentBackground(.hidden)
     }
+    
+    private func delete(at offsets: IndexSet) {
+            Task {
+                for index in offsets {
+                    let country = viewModel.countriesToShowArray[index]
+                    try await viewModel.removeCountry(country: country)
+                }
+                // Удалим страну из отображаемого массива
+                withAnimation {
+                    viewModel.countriesToShowArray.remove(atOffsets: offsets)
+                }
+            }
+        }
 }
 
 #Preview {
     let viewModel = CountriesViewModel()
-    CountriesListView(viewModel: viewModel)
+    CountriesListView(viewModel: viewModel, canDelete: false)
 }

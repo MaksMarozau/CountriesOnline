@@ -14,13 +14,13 @@ struct InfoStackView: View {
     var body: some View {
         ScrollView(Axis.Set.vertical) {
             VStack {
-                InfoItemView(title: "Capital:", description: country.capital?.joined(separator: ", ") ?? "No capital")
-                InfoItemView(title: "Population:", description: String(country.population))
-                InfoItemView(title: "Area:", description: String(country.area))
-                InfoItemView(title: "Currency:", description: country.currencies?.map { "\($0.value.name) (\($0.value.symbol))" }.joined(separator: "; ") ?? "No currency information available")
-                InfoItemView(title: "Languages:", description: country.languages?.map {"\($0.value)"}.joined(separator: "; ") ?? "No currency information available")
-                InfoItemView(title: "Timezone:", description: country.timezones.map {"\($0)"}.joined(separator: "; "))
-                InfoItemView(title: "Coordinates:", description: country.latlng.map {"\($0)"}.joined(separator: ", "))
+                InfoItemView(title: NSLocalizedString("Capital:", comment: ""), description: country.capital?.joined(separator: ", ") ?? NSLocalizedString("No capital", comment: ""))
+                InfoItemView(title: NSLocalizedString("Population:", comment: ""), description: String(country.population))
+                InfoItemView(title: NSLocalizedString("Area:", comment: ""), description: String(country.area))
+                InfoItemView(title: NSLocalizedString("Currency:", comment: ""), description: country.currencies?.map { "\($0.value.name) (\($0.value.symbol))" }.joined(separator: "; ") ?? NSLocalizedString("No currency information available", comment: ""))
+                InfoItemView(title: NSLocalizedString("Languages:", comment: ""), description: country.languages?.map {"\($0.value)"}.joined(separator: "; ") ?? NSLocalizedString("No currency information available", comment: ""))
+                InfoItemView(title: NSLocalizedString("Timezone:", comment: ""), description: country.timezones.map {"\($0)"}.joined(separator: "; "))
+                InfoItemView(title: NSLocalizedString("Coordinates:", comment: ""), description: country.latlng.map {"\($0)"}.joined(separator: ", "))
             }
             .padding(.horizontal, 12)
             .padding(.top, 50)

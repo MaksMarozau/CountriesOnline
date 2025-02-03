@@ -26,21 +26,20 @@ struct TextFieldCustomeView: View {
             
             TextField("Search...", text: $viewModel.keyWords)
                 .frame(height: 45)
-                .foregroundStyle(.black)
+                .foregroundStyle(.customeBlack)
             
-            Button(action: {
-                print("Favorites tapped")
-            }) {
+            NavigationLink(destination: {
+                FavoriteCountriesView(countriesArray: viewModel.countriesToShowArray)
+            }, label: {
                 Image(systemName: "star.fill")
                     .frame(width: 45, height: 45)
                     .background(.blue)
                     .foregroundColor(.yellow)
-            }
-                
+            })
         }
         .overlay(content: {
             RoundedRectangle(cornerRadius: 8)
-                .stroke(Color.black, lineWidth: 2)
+                .stroke(Color.customeBlack, lineWidth: 2)
             
         })
         .clipShape(RoundedRectangle(cornerRadius: 8))

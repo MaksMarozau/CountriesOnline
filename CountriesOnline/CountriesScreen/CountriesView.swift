@@ -22,7 +22,7 @@ struct CountriesView: View {
                     Spacer()
                     
                 } else {
-                    CountriesListView(viewModel: viewModel)
+                    CountriesListView(viewModel: viewModel, canDelete: false)
                         .padding(.top, 12)
                         .navigationDestination(item: $viewModel.selectedCountry) { country in
                             CountryDetailView(country: country)

@@ -36,7 +36,7 @@ struct MapView: View {
                 Spacer()
                 
                 Button {
-                    viewModel.mapButtonTapped()
+                    viewModel.mapShowToggle()
                 } label: {
                     ZStack {
                         Color(.customeGray)

@@ -9,7 +9,6 @@ import SwiftUI
 
 struct FooterButtonsView: View {
     
-    @State private var isFavorite: Bool = false
     @State var country: CountryModel
     @StateObject var viewModel: CountryDetailViewModel
     
@@ -22,7 +21,7 @@ struct FooterButtonsView: View {
                     .shadow(color: .customeGray, radius: 12, y: 5)
                 
                 Button {
-                    isFavorite.toggle()
+                    viewModel.favoriteStatusToggle(by: country.cca3)
                 } label: {
                     ZStack {
                         Color(.white)
@@ -30,7 +29,7 @@ struct FooterButtonsView: View {
                             .cornerRadius(10)
                             .padding(.bottom, 9)
                         
-                        Image(systemName: isFavorite ? "star.fill" : "star")
+                        Image(systemName: viewModel.isFavorite ? "star.fill" : "star")
                             .resizable()
                             .frame(width: 30, height: 30)
                             .foregroundColor(.yellow)
@@ -48,7 +47,7 @@ struct FooterButtonsView: View {
                     .shadow(color: .customeGray, radius: 12, y: 5)
                 
                 Button {
-                    viewModel.mapButtonTapped()
+                    viewModel.mapShowToggle()
                 } label: {
                     ZStack {
                         Color(.white)
@@ -90,6 +89,11 @@ struct FooterButtonsView: View {
             }
         }
         .padding(.horizontal, 50)
+        .onAppear() {
+            Task {
+                await viewModel.isFavoriteStatusChecking(by: country.cca3)
+            }
+        }
     }
 }
 

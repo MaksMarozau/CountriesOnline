@@ -8,7 +8,16 @@
 import SwiftUI
 
 
-final class CountriesViewModel: ObservableObject {
+protocol CountriesListProtocol: ObservableObject {
+    var countriesToShowArray: [CountryModel] { get set }
+    var selectedCountry: CountryModel? { get set }
+    
+    func removeCountry(country: CountryModel) async throws
+}
+
+
+final class CountriesViewModel: ObservableObject, CountriesListProtocol {
+    
     private var originCountriesArray: [CountryModel] = []
     @Published var countriesToShowArray: [CountryModel] = []
     @Published var selectedCountry: CountryModel?
@@ -28,7 +37,7 @@ final class CountriesViewModel: ObservableObject {
                 return data
             } else {
                 do {
-                    let data = try await CoreDataService.shared.loadcachedCountriesData()
+                    let data = try await CoreDataService.shared.loadСachedCountriesData()
                     DispatchQueue.main.async {
                         self.errorMessage = InthernetConectionErrorService.noInternetConnectionWithCache.rawValue
                     }
@@ -90,5 +99,9 @@ final class CountriesViewModel: ObservableObject {
                 self.errorsProcessing(error)
             }
         }
+    }
+    
+    func removeCountry(country: CountryModel) async throws {
+        
     }
 }

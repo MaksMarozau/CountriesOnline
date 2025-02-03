@@ -51,7 +51,29 @@ final class CoreDataService {
     }
     
     
-    func loadcachedCountriesData() async throws -> Data {
+    func saveCca3Code(cca3Code: String) throws {
+        let fetchRequest = NSFetchRequest<FavoritCountriesEntity>(entityName: "FavoritCountriesEntity")
+        fetchRequest.predicate = NSPredicate(format: "cca3Code == %@", cca3Code)
+        
+        do {
+            let results = try self.viewContext.fetch(fetchRequest)
+            if results.isEmpty {
+                let newEntity = FavoritCountriesEntity(context: viewContext)
+                newEntity.cca3Code = cca3Code
+                
+                do {
+                    try viewContext.save()
+                } catch {
+                    throw CoreDataErrorService.saveDataError
+                }
+            } else {
+                throw CoreDataErrorService.entityCreationError
+            }
+        }
+    }
+    
+    
+    func loadСachedCountriesData() async throws -> Data {
         try await viewContext.perform {
             let fetchRequest = NSFetchRequest<CachedCountriesEntity>(entityName: "CachedCountriesEntity")
             
@@ -62,6 +84,41 @@ final class CoreDataService {
                 } else {
                     throw CoreDataErrorService.noDataError
                 }
+            }
+        }
+    }
+    
+    
+    func loadCca3Codes() async throws -> [String] {
+        try await viewContext.perform {
+            let fetchRequest = NSFetchRequest<FavoritCountriesEntity>(entityName: "FavoritCountriesEntity")
+            var cca3CodesArray = [String]()
+            
+            do {
+                let result = try self.viewContext.fetch(fetchRequest)
+                guard !result.isEmpty else {
+                    throw CoreDataErrorService.noDataError
+                }
+                result.forEach({cca3CodesArray.append($0.cca3Code ?? "")})
+                return cca3CodesArray
+            } catch {
+                throw CoreDataErrorService.loadDataError
+            }
+        }
+    }
+    
+    
+    func deleteCca3Code(cca3Code: String) throws {
+        let fetchRequest: NSFetchRequest<FavoritCountriesEntity> = FavoritCountriesEntity.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "cca3Code == %@", cca3Code)
+        
+        if let resultToDelete = try self.viewContext.fetch(fetchRequest).first {
+            self.viewContext.delete(resultToDelete)
+            
+            do {
+                try self.viewContext.save()
+            } catch {
+                throw CoreDataErrorService.saveDataError
             }
         }
     }

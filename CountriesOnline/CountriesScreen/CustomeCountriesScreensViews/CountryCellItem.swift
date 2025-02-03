@@ -30,13 +30,14 @@ struct CountryCellItem: View {
                 VStack(alignment: .leading) {
                     Text(country.name.common)
                         .font(.system(size: 32, weight: .bold))
+                        .foregroundColor(.black)
                         .lineLimit(1)
                         .minimumScaleFactor(0.5)
                         .frame(maxWidth: .infinity, alignment: .leading)
                     
                     Text(country.region)
                         .font(.system(size: 17, weight: .semibold))
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(.customeGray)
                 }
                 .padding(.horizontal, 22)
                 .padding(.bottom, 9)
