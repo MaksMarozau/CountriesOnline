@@ -73,9 +73,7 @@ struct FooterButtonsView: View {
                     .cornerRadius(10)
                     .shadow(color: .customeGray, radius: 12, y: 5)
                 
-                Button {
-                    
-                } label: {
+                ShareLink(item: "Check out this amazing country: \(country.name.common), coordinates: \(country.latlng)") {
                     ZStack {
                         Color(.white)
                             .frame(width: 70, height: 47)
