@@ -48,7 +48,7 @@ struct FooterButtonsView: View {
                     .shadow(color: .customeGray, radius: 12, y: 5)
                 
                 Button {
-                    viewModel.openMapWithCoordinates(latitude: country.latlng[0], longitude: country.latlng[1])
+                    viewModel.mapButtonTapped()
                 } label: {
                     ZStack {
                         Color(.white)

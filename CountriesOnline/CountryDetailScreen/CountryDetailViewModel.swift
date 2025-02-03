@@ -9,12 +9,9 @@ import MapKit
 
 
 final class CountryDetailViewModel: ObservableObject {
+    @Published var isShowMap = false
     
-    func openMapWithCoordinates(latitude: CLLocationDegrees, longitude: CLLocationDegrees) {
-        let coordinate = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
-        let placemark = MKPlacemark(coordinate: coordinate)
-        let mapItem = MKMapItem(placemark: placemark)
-        mapItem.name = "Место назначения"
-        mapItem.openInMaps()
+    func mapButtonTapped() {
+        isShowMap.toggle()
     }
 }

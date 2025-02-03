@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Kingfisher
+import MapKit
 
 struct CountryDetailView: View {
     @State var country: CountryModel
@@ -25,6 +26,10 @@ struct CountryDetailView: View {
         }
         .padding(.vertical, 20)
         .navigationTitle("About \(country.name.common)")
+        .sheet(isPresented: $viewModel.isShowMap) {
+            MapView(coordinates: CLLocationCoordinate2D(latitude: country.latlng[0], longitude: country.latlng[1]), countryName: country.name.common, viewModel: viewModel)
+                .edgesIgnoringSafeArea(.all)
+        }
     }
 }
 
