@@ -7,11 +7,14 @@
 
 import SwiftUI
 
+
 struct InfoItemView: View {
     
+    //MARK: - Properties
     @State var title: String
     @State var description: String
     
+    //MARK: - Body of main view
     var body: some View {
         VStack {
             HStack(alignment: .center) {
@@ -33,6 +36,7 @@ struct InfoItemView: View {
         .padding(.bottom, 12)
     }
 }
+
 
 #Preview {
     let title = "Capital:"

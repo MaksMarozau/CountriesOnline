@@ -7,13 +7,18 @@
 
 import SwiftUI
 
+//MARK: - Footer's buttons group
 struct FooterButtonsView: View {
     
+    //MARK: - Properties
     @State var country: CountryModel
     @StateObject var viewModel: CountryDetailViewModel
     
+    //MARK: - Body of main view
     var body: some View {
         HStack {
+            
+            //Custome button to adding the country to favorites
             ZStack {
                 Color(.customeGray)
                     .frame(width: 70, height: 55)
@@ -40,6 +45,7 @@ struct FooterButtonsView: View {
             
             Spacer()
             
+            //Custome button to display the country on a map
             ZStack {
                 Color(.customeGray)
                     .frame(width: 70, height: 55)
@@ -66,6 +72,7 @@ struct FooterButtonsView: View {
             
             Spacer()
             
+            //Custome button to share the country (name with location)
             ZStack {
                 Color(.customeGray)
                     .frame(width: 70, height: 55)
@@ -96,6 +103,7 @@ struct FooterButtonsView: View {
         }
     }
 }
+
 
 #Preview {
     let country = CountryModel(

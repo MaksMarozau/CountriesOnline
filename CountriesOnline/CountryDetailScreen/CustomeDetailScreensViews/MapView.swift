@@ -6,20 +6,25 @@
 //
 
 import SwiftUI
-import  MapKit
+import MapKit
+
 
 struct MapView: View {
+    
+    //MARK: - Properties
     var coordinates: CLLocationCoordinate2D
     var countryName: String
-    
     @State private var position: MapCameraPosition = .automatic
     @StateObject var viewModel: CountryDetailViewModel
 
+    //MARK: - Body of main view
     var body: some View {
         ZStack {
             Map(position: $position) {
                 Marker(countryName, systemImage: "mappin", coordinate: coordinates)
             }
+            
+            //Initial setup of region parameters in the onAppeare lifecycle's method
             .onAppear {
                 let region = MKCoordinateRegion(
                     center: CLLocationCoordinate2D(
@@ -35,6 +40,7 @@ struct MapView: View {
             VStack {
                 Spacer()
                 
+                //Button to hide the map
                 Button {
                     viewModel.mapShowToggle()
                 } label: {
@@ -60,6 +66,7 @@ struct MapView: View {
         }
     }
 }
+
 
 #Preview {
     MapView(coordinates: CLLocationCoordinate2D(latitude: 51.811, longitude: 33.4573), countryName: "Butan", viewModel: CountryDetailViewModel())

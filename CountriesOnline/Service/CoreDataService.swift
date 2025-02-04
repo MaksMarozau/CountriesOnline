@@ -9,35 +9,47 @@ import Foundation
 import CoreData
 
 
+//MARK: - Final class CoreDataService
 final class CoreDataService {
     
+    //Singleton pattern implemendation
     static let shared = CoreDataService()
+    private init() { }
     
+    //MARK: - Computed properties
+    //Persistent container getting
     private var persistentContainer: NSPersistentContainer {
         let container = PersistenceController.shared.container
         return container
     }
     
+    //ViewContext getting
     private var viewContext: NSManagedObjectContext {
         return persistentContainer.viewContext
     }
     
-    private init() { }
     
-    
+    //MARK: Methods of class
+    //Cache data method. Save the countries as a binary data file
     func cacheCounrtiesData(counrtiesData: Data) async throws {
         try await viewContext.perform {
             let fetchRequest = NSFetchRequest<CachedCountriesEntity>(entityName: "CachedCountriesEntity")
             
             do {
+                //Attempt to load data to check if there is in a cache
                 let results = try self.viewContext.fetch(fetchRequest)
+                
+                //if there is in a cach, then resave data
                 if let entity = results.first {
                     entity.cachedData = counrtiesData
+                    
+                //if there isn't in a cache, then create new entity to save data
                 } else {
                     let newEntity = CachedCountriesEntity(context: self.viewContext)
                     newEntity.cachedData = counrtiesData
                 }
                 
+                //save context with data
                 do {
                     try self.viewContext.save()
                 } catch {
@@ -51,12 +63,16 @@ final class CoreDataService {
     }
     
     
+    //Save country's id as cca3 code to implemented favorite countries storage
     func saveCca3Code(cca3Code: String) throws {
         let fetchRequest = NSFetchRequest<FavoritCountriesEntity>(entityName: "FavoritCountriesEntity")
         fetchRequest.predicate = NSPredicate(format: "cca3Code == %@", cca3Code)
         
         do {
+            //Attempt to load code to check if its was saved early
             let results = try self.viewContext.fetch(fetchRequest)
+            
+            //If code wasn't save, then create new entity to save current code
             if results.isEmpty {
                 let newEntity = FavoritCountriesEntity(context: viewContext)
                 newEntity.cca3Code = cca3Code
@@ -73,6 +89,7 @@ final class CoreDataService {
     }
     
     
+    //Cached countries loading as a binary data type
     func loadСachedCountriesData() async throws -> Data {
         try await viewContext.perform {
             let fetchRequest = NSFetchRequest<CachedCountriesEntity>(entityName: "CachedCountriesEntity")
@@ -89,6 +106,7 @@ final class CoreDataService {
     }
     
     
+    //Load cca3-codes array to implemented favorite countries function
     func loadCca3Codes() async throws -> [String] {
         try await viewContext.perform {
             let fetchRequest = NSFetchRequest<FavoritCountriesEntity>(entityName: "FavoritCountriesEntity")
@@ -108,6 +126,7 @@ final class CoreDataService {
     }
     
     
+    //Delete cca3-code to implemented favorite countries delete function
     func deleteCca3Code(cca3Code: String) throws {
         let fetchRequest: NSFetchRequest<FavoritCountriesEntity> = FavoritCountriesEntity.fetchRequest()
         fetchRequest.predicate = NSPredicate(format: "cca3Code == %@", cca3Code)

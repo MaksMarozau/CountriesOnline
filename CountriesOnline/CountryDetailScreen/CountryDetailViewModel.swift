@@ -8,11 +8,15 @@
 import MapKit
 
 
+//MARK: - Final class CountryDetailViewModel
 final class CountryDetailViewModel: ObservableObject {
+    
+    //MARK: - Properties of class
     @Published var isShowMap = false
     @Published var isFavorite = false
     
     
+    //MARK: - Private methods
     private func addToFavorites(by cca3Code: String) {
         do {
             try CoreDataService.shared.saveCca3Code(cca3Code: cca3Code)
@@ -39,6 +43,8 @@ final class CountryDetailViewModel: ObservableObject {
         }
     }
     
+    
+    //MARK: - Internal methods
     func mapShowToggle() {
         isShowMap.toggle()
     }
@@ -52,7 +58,6 @@ final class CountryDetailViewModel: ObservableObject {
             isFavorite = true
         }
     }
-    
     
     func isFavoriteStatusChecking(by cca3Code: String) async {
         let favoritesArray = await loadFavorites()

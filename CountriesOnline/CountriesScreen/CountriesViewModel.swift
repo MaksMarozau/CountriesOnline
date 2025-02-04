@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-
+//MARK: - Protocol with mandatory methods to reuse the countries list
 protocol CountriesListProtocol: ObservableObject {
     var countriesToShowArray: [CountryModel] { get set }
     var selectedCountry: CountryModel? { get set }
@@ -16,8 +16,10 @@ protocol CountriesListProtocol: ObservableObject {
 }
 
 
+//MARK: - Final class CountriesViewModel
 final class CountriesViewModel: ObservableObject, CountriesListProtocol {
     
+    //MARK: - Properties of class
     private var originCountriesArray: [CountryModel] = []
     @Published var countriesToShowArray: [CountryModel] = []
     @Published var selectedCountry: CountryModel?
@@ -29,6 +31,8 @@ final class CountriesViewModel: ObservableObject, CountriesListProtocol {
         }
     }
     
+    
+    //MARK: - Private methods of class
     private func fetchData() async throws -> Data {
         do {
             if await NetworkService.shared.checkInternetConnection() == true {
@@ -75,6 +79,7 @@ final class CountriesViewModel: ObservableObject, CountriesListProtocol {
     }
 
 
+    //MARK: - Internal methods of class
     func filterCountries(by keyword: String) {
         var filtredCountriesArray: [CountryModel] = []
         if keyword.isEmpty {
@@ -101,7 +106,6 @@ final class CountriesViewModel: ObservableObject, CountriesListProtocol {
         }
     }
     
-    func removeCountry(country: CountryModel) async throws {
-        
-    }
+    //The empty method. Created to extension List with the delete function in the future. The mandatory method to reuse the countries List.
+    func removeCountry(country: CountryModel) async throws {}
 }

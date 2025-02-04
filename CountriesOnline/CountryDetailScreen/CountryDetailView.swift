@@ -6,18 +6,21 @@
 //
 
 import SwiftUI
-import Kingfisher
-import MapKit
+import CoreLocation
+
 
 struct CountryDetailView: View {
+    
+    //MARK: - Properties
     @State var country: CountryModel
     @State private var svgFlagImage: UIImage?
     @StateObject private var viewModel = CountryDetailViewModel()
     
+    //MARK: - Body of main view
     var body: some View {
         VStack {
             InfoFlagView(country: country)
-
+            
             InfoStackView(country: country)
                 .padding(.top, -10)
                 .padding(.bottom, 10)
@@ -26,6 +29,8 @@ struct CountryDetailView: View {
         }
         .padding(.vertical, 20)
         .navigationTitle("About \(country.name.common)")
+        
+        //Sheet with country's location displaying on the custome map
         .sheet(isPresented: $viewModel.isShowMap) {
             MapView(coordinates: CLLocationCoordinate2D(latitude: country.latlng[0], longitude: country.latlng[1]), countryName: country.name.common, viewModel: viewModel)
                 .edgesIgnoringSafeArea(.all)

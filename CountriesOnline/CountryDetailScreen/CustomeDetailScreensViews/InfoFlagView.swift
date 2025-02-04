@@ -8,10 +8,13 @@
 import SwiftUI
 import Kingfisher
 
+
 struct InfoFlagView: View {
     
+    //MARK: - Properties
     @State var country: CountryModel
     
+    //MARK: - Body of main view
     var body: some View {
         VStack {
             Text(country.name.official)
@@ -20,6 +23,7 @@ struct InfoFlagView: View {
                 .minimumScaleFactor(0.4)
                 .frame(maxWidth: .infinity, alignment: .center)
             
+            //Use Kingfisher to load and cache flag images
             KFImage(URL(string: country.flags.png))
                 .placeholder({ _ in
                     ProgressView("Flag is in loading process...")

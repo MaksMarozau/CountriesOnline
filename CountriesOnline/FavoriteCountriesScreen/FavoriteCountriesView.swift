@@ -7,18 +7,24 @@
 
 import SwiftUI
 
+
 struct FavoriteCountriesView: View {
     
+    //MARK: - Properties
     @StateObject var viewModel = FavoriteCountriesViewModel()
     @State var countriesArray: [CountryModel]
     
+    //MARK: - Body of main view
     var body: some View {
         VStack {
+            
+            //show ProgressIndicator before data will load
             if viewModel.isLoading {
                 Spacer()
                 ProgressView("Loading...")
                 Spacer()
                 
+                //after data was loaded show List with countries
             } else {
                 CountriesListView(viewModel: viewModel, canDelete: true)
                     .padding(.top, 12)
@@ -28,6 +34,8 @@ struct FavoriteCountriesView: View {
             }
         }
         .navigationTitle("Favorites")
+        
+        //Lifecicles methods
         .onAppear() {
             Task {
                 await viewModel.fetchFavoriteCountries(where: countriesArray)
@@ -38,6 +46,7 @@ struct FavoriteCountriesView: View {
         }
     }
 }
+
 
 #Preview {
     let country = CountryModel(

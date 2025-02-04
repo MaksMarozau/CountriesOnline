@@ -7,10 +7,13 @@
 
 import SwiftUI
 
+
 struct InfoStackView: View {
-    
+
+    //MARK: - Properties
     @State var country: CountryModel
     
+    //MARK: - Body of main view
     var body: some View {
         ScrollView(Axis.Set.vertical) {
             VStack {
@@ -25,6 +28,8 @@ struct InfoStackView: View {
             .padding(.horizontal, 12)
             .padding(.top, 50)
         }
+        
+        //Mask with linear gradient to create smooth alfa-canal from 0 to 1 for scroll view
         .mask(
             LinearGradient(
                 gradient: Gradient(colors: [

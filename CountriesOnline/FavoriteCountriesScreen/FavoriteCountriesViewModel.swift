@@ -8,11 +8,16 @@
 import Foundation
 
 
+//MARK: - Final class FavoriteCountriesViewModel with CountriesListProtocol implemendation (to reuse the List)
 final class FavoriteCountriesViewModel: ObservableObject, CountriesListProtocol {
+    
+    //MARK: - Properties
     @Published var countriesToShowArray: [CountryModel] = []
     @Published var selectedCountry: CountryModel?
     @Published var isLoading: Bool = true
     
+    
+    //MARK: - Internal methods
     func fetchFavoriteCountries(where countries: [CountryModel]) async {
         do {
             let cca3Codes = try await CoreDataService.shared.loadCca3Codes()
@@ -33,7 +38,6 @@ final class FavoriteCountriesViewModel: ObservableObject, CountriesListProtocol 
             print(error.localizedDescription)
         }
     }
-    
     
     func removeCountry(country: CountryModel) async throws {
         let cca3Code = country.cca3

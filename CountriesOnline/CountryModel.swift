@@ -5,8 +5,10 @@
 //  Created by Maks on 29.01.25.
 //
 
-import SwiftUI
+import Foundation
 
+
+//MARK: - Model of the country with implemendation of the protocols
 struct CountryModel: Identifiable, Codable, Hashable {
     var id: String { cca3 }
     let name: CountryName

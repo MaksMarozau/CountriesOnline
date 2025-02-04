@@ -7,6 +7,7 @@
 
 import Foundation
 
+//To processing Network errors
 enum NetworkErrorService: String, Error {
     case badURL
     case badRequest
@@ -14,11 +15,13 @@ enum NetworkErrorService: String, Error {
     case invalidData
 }
 
+//To processing cases when the internet connection is absend. We have 2 cases: with cased data and without
 enum InthernetConectionErrorService: String, Error {
     case noInternetConnectionWithCache = "Data was loaded from cache"
     case noInternetConnectionWithoutCache = "No internet connection. No data in cache"
 }
 
+//To processing CoreData errors
 enum CoreDataErrorService: String, Error {
     case cacheDataError
     case entityCreationError
@@ -26,10 +29,4 @@ enum CoreDataErrorService: String, Error {
     case castDataError
     case loadDataError
     case noDataError 
-    
-    case initCoreDataError
-
-    case objectNotFoundError
-    case updateError
-    case fetchEntityCountError
 }

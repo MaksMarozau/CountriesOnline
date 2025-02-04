@@ -9,18 +9,22 @@ import SwiftUI
 
 struct CountriesView: View {
     
+    //MARK: - Properties
     @StateObject var viewModel = CountriesViewModel()
     
+    //MARK: - Body of main view
     var body: some View {
         NavigationStack {
             VStack {
                 TextFieldCustomeView(viewModel: viewModel)
                 
+                //show ProgressIndicator before data will load
                 if viewModel.isLoading {
                     Spacer()
                     ProgressView("Loading...")
                     Spacer()
                     
+                //after data was loaded show List with countries
                 } else {
                     CountriesListView(viewModel: viewModel, canDelete: false)
                         .padding(.top, 12)
@@ -29,6 +33,8 @@ struct CountriesView: View {
                         }
                 }
             }
+            
+            //Alert with errors processing implemendation
             .alert("Error", isPresented: Binding(
                 get: { viewModel.errorMessage != nil },
                 set: { _ in viewModel.errorMessage = nil })
@@ -39,6 +45,8 @@ struct CountriesView: View {
             } message: {
                 Text(viewModel.errorMessage ?? "Unknowned Error")
             }
+            
+            //Life cycle methods
             .onAppear() {
                 Task {
                     await viewModel.fetchCountries()
@@ -47,6 +55,7 @@ struct CountriesView: View {
         }
     }
 }
+
 
 #Preview {
     CountriesView()
