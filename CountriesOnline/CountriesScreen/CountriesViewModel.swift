@@ -7,8 +7,19 @@
 
 import SwiftUI
 
+//MARK: - Protocol with mandatory methods to reuse the countries list
+protocol CountriesListProtocol: ObservableObject {
+    var countriesToShowArray: [CountryModel] { get set }
+    var selectedCountry: CountryModel? { get set }
+    
+    func removeCountry(country: CountryModel) async throws
+}
 
-final class CountriesViewModel: ObservableObject {
+
+//MARK: - Final class CountriesViewModel
+final class CountriesViewModel: ObservableObject, CountriesListProtocol {
+    
+    //MARK: - Properties of class
     private var originCountriesArray: [CountryModel] = []
     @Published var countriesToShowArray: [CountryModel] = []
     @Published var selectedCountry: CountryModel?
@@ -20,9 +31,28 @@ final class CountriesViewModel: ObservableObject {
         }
     }
     
+    
+    //MARK: - Private methods of class
     private func fetchData() async throws -> Data {
-        let data = try await NetworkService.shared.fetchData()
-        return data
+        do {
+            if await NetworkService.shared.checkInternetConnection() == true {
+                let data = try await NetworkService.shared.fetchData()
+                try await CoreDataService.shared.cacheCounrtiesData(counrtiesData: data)
+                return data
+            } else {
+                do {
+                    let data = try await CoreDataService.shared.loadСachedCountriesData()
+                    DispatchQueue.main.async {
+                        self.errorMessage = InthernetConectionErrorService.noInternetConnectionWithCache.rawValue
+                    }
+                    return data
+                } catch {
+                    throw InthernetConectionErrorService.noInternetConnectionWithoutCache
+                }
+            }
+        } catch {
+            throw error
+        }
     }
     
     private func decodeData(data: Data) throws -> [CountryModel] {
@@ -43,10 +73,13 @@ final class CountriesViewModel: ObservableObject {
     private func errorsProcessing(_ error: Error) {
         if let currentError = error as? NetworkErrorService {
             errorMessage = currentError.rawValue + "\nYou can try to restart the application"
+        } else if let currentError = error as? CoreDataErrorService {
+            errorMessage = currentError.rawValue + "\nPlease, relaunch the application"
         }
     }
 
 
+    //MARK: - Internal methods of class
     func filterCountries(by keyword: String) {
         var filtredCountriesArray: [CountryModel] = []
         if keyword.isEmpty {
@@ -72,4 +105,7 @@ final class CountriesViewModel: ObservableObject {
             }
         }
     }
+    
+    //The empty method. Created to extension List with the delete function in the future. The mandatory method to reuse the countries List.
+    func removeCountry(country: CountryModel) async throws {}
 }

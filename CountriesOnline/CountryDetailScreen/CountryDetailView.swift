@@ -6,46 +6,38 @@
 //
 
 import SwiftUI
-import Kingfisher
+import CoreLocation
+
 
 struct CountryDetailView: View {
+    
+    //MARK: - Properties
     @State var country: CountryModel
     @State private var svgFlagImage: UIImage?
+    @StateObject private var viewModel = CountryDetailViewModel()
     
+    //MARK: - Body of main view
     var body: some View {
         VStack {
-            Text(country.name.official)
-                .font(.system(size: 36, weight: .black))
-                .lineLimit(1)
-                .minimumScaleFactor(0.4)
-                .frame(maxWidth: .infinity, alignment: .center)
-                .padding(.horizontal, 12)
+            InfoFlagView(country: country)
             
-            KFImage(URL(string: country.flags.png))
-                .placeholder({ _ in
-                    ProgressView("Flag is in loading process...")
-                })
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-                .frame(maxWidth: 330, maxHeight: 220)
-                .cornerRadius(10)
-                .shadow(color: .customeGray, radius: 15, y: 5)
-                .padding(.horizontal, 12)
+            InfoStackView(country: country)
+                .padding(.top, -10)
+                .padding(.bottom, 10)
             
-            Spacer()
-            
-            InfoView(title: "Capital:", description: country.capital?.joined(separator: ", ") ?? "No capital")
-            InfoView(title: "Population:", description: String(country.population))
-            InfoView(title: "Area:", description: String(country.area))
-            InfoView(title: "Currency:", description: country.currencies?.map { "\($0.value.name) (\($0.value.symbol))" }.joined(separator: "; ") ?? "No currency information available")
-            InfoView(title: "Languages:", description: country.languages?.map {"\($0.value)"}.joined(separator: "; ") ?? "No currency information available")
-            InfoView(title: "Timezone:", description: country.timezones.map {"\($0)"}.joined(separator: "; "))
-            InfoView(title: "Coordinates:", description: country.latlng.map {"\($0)"}.joined(separator: ", "))
+            FooterButtonsView(country: country, viewModel: viewModel)
         }
         .padding(.vertical, 20)
         .navigationTitle("About \(country.name.common)")
+        
+        //Sheet with country's location displaying on the custome map
+        .sheet(isPresented: $viewModel.isShowMap) {
+            MapView(coordinates: CLLocationCoordinate2D(latitude: country.latlng[0], longitude: country.latlng[1]), countryName: country.name.common, viewModel: viewModel)
+                .edgesIgnoringSafeArea(.all)
+        }
     }
 }
+
 
 #Preview {
     let country = CountryModel(

@@ -1,5 +1,5 @@
 //
-//  InfoView.swift
+//  InfoItemView.swift
 //  CountriesOnline
 //
 //  Created by Maks on 31.01.25.
@@ -7,11 +7,14 @@
 
 import SwiftUI
 
-struct InfoView: View {
+
+struct InfoItemView: View {
     
+    //MARK: - Properties
     @State var title: String
     @State var description: String
     
+    //MARK: - Body of main view
     var body: some View {
         VStack {
             HStack(alignment: .center) {
@@ -34,8 +37,9 @@ struct InfoView: View {
     }
 }
 
+
 #Preview {
     let title = "Capital:"
     let description = "Minsk"
-    InfoView(title: title, description: description)
+    InfoItemView(title: title, description: description)
 }

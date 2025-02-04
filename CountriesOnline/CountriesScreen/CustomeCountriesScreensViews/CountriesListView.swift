@@ -7,10 +7,14 @@
 
 import SwiftUI
 
-struct CountriesListView: View {
+//MARK: - List as generic struct to reuse its
+struct CountriesListView<ViewModel: CountriesListProtocol>: View {
     
-    @StateObject var viewModel: CountriesViewModel
+    //MARK: - Properties
+    @StateObject var viewModel: ViewModel
+    var canDelete: Bool
     
+    //MARK: - Body of main view
     var body: some View {
         List {
             ForEach(viewModel.countriesToShowArray) { country in
@@ -20,6 +24,9 @@ struct CountriesListView: View {
                     CountryCellItem(country: country)
                 }
             }
+            
+            //impelemendat the delete function for List's cell if it needs.
+            .onDelete(perform: canDelete ? delete : nil)
             .listRowSeparator(.hidden)
         }
         .scrollIndicators(.hidden)
@@ -27,9 +34,23 @@ struct CountriesListView: View {
         .background(Color.clear)
         .scrollContentBackground(.hidden)
     }
+    
+    //Delete list's cell method with simple animation
+    private func delete(at offsets: IndexSet) {
+        Task {
+            for index in offsets {
+                let country = viewModel.countriesToShowArray[index]
+                try await viewModel.removeCountry(country: country)
+            }
+            withAnimation {
+                viewModel.countriesToShowArray.remove(atOffsets: offsets)
+            }
+        }
+    }
 }
+
 
 #Preview {
     let viewModel = CountriesViewModel()
-    CountriesListView(viewModel: viewModel)
+    CountriesListView(viewModel: viewModel, canDelete: false)
 }

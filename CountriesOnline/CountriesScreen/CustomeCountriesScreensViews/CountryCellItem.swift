@@ -9,11 +9,14 @@ import SwiftUI
 import Kingfisher
 
 
+//MARK: - Custome Cell for List
 struct CountryCellItem: View {
     
+    //MARK: - Properties
     let country: CountryModel
     @State private var isFlagLoaded: Bool = false
     
+    //MARK: - Body of main view
     var body: some View {
         ZStack {
             Color(.customeGray)
@@ -30,19 +33,21 @@ struct CountryCellItem: View {
                 VStack(alignment: .leading) {
                     Text(country.name.common)
                         .font(.system(size: 32, weight: .bold))
+                        .foregroundColor(.black)
                         .lineLimit(1)
                         .minimumScaleFactor(0.5)
                         .frame(maxWidth: .infinity, alignment: .leading)
                     
                     Text(country.region)
                         .font(.system(size: 17, weight: .semibold))
-                        .foregroundStyle(.secondary)
+                        .foregroundStyle(.customeGray)
                 }
                 .padding(.horizontal, 22)
                 .padding(.bottom, 9)
                 
                 Spacer()
                 
+                //Adding a flag image with the Kingfisher to load and cache it
                 KFImage(URL(string: country.flags.png))
                     .placeholder {
                         ProgressView()
@@ -64,6 +69,7 @@ struct CountryCellItem: View {
         }
     }
 }
+
 
 #Preview {
     let country = CountryModel(
